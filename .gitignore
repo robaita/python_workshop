@@ -1,0 +1,16 @@
+# Hidden files
+CDAC-Hyderabad.txt
+
+# Jupyter notebooks files
+.ipynb_checkpoints
+.ipynb_checkpoints/
+# dotenv environment variables file
+.env
+.env.*
+!.env.example
+
+.cache
+**/.cache
+
+.idea
+.vscode
