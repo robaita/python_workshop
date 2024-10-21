@@ -1,5 +1,7 @@
 # Hidden files
 CDAC-Hyderabad.txt
+.virtual_documents
+.virtual_documents/
 
 # Jupyter notebooks files
 .ipynb_checkpoints
