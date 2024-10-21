@@ -1,0 +1,96 @@
+# create database
+create database python_workshop;
+
+# use the existing database
+use python_workshop;
+
+# create a simple table
+CREATE TABLE students (
+student_id VARCHAR(15),
+name VARCHAR(100),
+email VARCHAR(50)
+);
+
+# create another table
+CREATE TABLE enrollments (
+    enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
+    student_id VARCHAR(15),
+    course_id INT
+);
+# 
+CREATE TABLE data_types_table (
+-- Numeric Data Types
+id INT AUTO_INCREMENT PRIMARY KEY, -- Integer with auto increment
+small_number SMALLINT, -- Small integer for smaller range values
+large_number BIGINT, -- Large integer for bigger range values
+decimal_number DECIMAL(10, 2), -- Fixed-point decimal (10 digits, 2 after the decimal)
+float_number FLOAT, -- Floating-point number
+double_number DOUBLE, -- Double-precision floating point
+bit_value BIT(8), -- Binary bit data (8-bit)
+
+-- String Data Types
+char_value CHAR(10), -- Fixed-length string
+varchar_value VARCHAR(50), -- Variable-length string
+text_value TEXT, -- Large block of text data
+enum_value ENUM('small', 'medium', 'large'), -- Enumeration type (one choice from set)
+set_value SET('a', 'b', 'c', 'd'), -- Set type (multiple choices from set)
+
+-- Date and Time Data Types
+date_value DATE, -- Date in YYYY-MM-DD format
+time_value TIME, -- Time in HH:MM:SS format
+datetime_value DATETIME, -- Date and time
+timestamp_value TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Timestamp with auto-update
+-- Boolean Data Type
+boolean_value BOOLEAN, -- Boolean (TRUE/FALSE, stored as TINYINT)
+-- Binary Data Types
+binary_value BINARY(16), -- Fixed-length binary data
+blob_value BLOB, -- Binary large object (for storing images, files, etc.)
+-- JSON Data Type
+json_value JSON -- JSON-formatted data
+);
+
+
+# insert records into the comlex table
+INSERT INTO data_types_table (
+    small_number, large_number, decimal_number, float_number, double_number, bit_value,
+    char_value, varchar_value, text_value, enum_value, set_value,
+    date_value, time_value, datetime_value, boolean_value, binary_value, json_value
+)
+VALUES (
+    120, 9876543210, 12345.67, 3.14, 2.71828, b'10101010',
+    'A', 'Hello World', 'This is a large text field.', 'medium', 'a,b',
+    '2024-10-19', '12:34:56', '2024-10-19 12:34:56', TRUE, 
+    0xAABBCCDDEEFF00112233445566778899, '{"name": "John", "age": 30}'
+);
+
+# change the data type
+ALTER TABLE data_types_table
+MODIFY COLUMN varchar_value VARCHAR(100);
+
+# Drop a column
+ALTER TABLE data_types_table
+DROP COLUMN id;
+
+# add a column and key
+ALTER TABLE data_types_table
+ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY;
+
+# add foreign key
+# first add index on students table
+CREATE INDEX idx_student_id ON students(student_id);
+
+ALTER TABLE enrollments 
+ADD CONSTRAINT fk_student 
+FOREIGN KEY (student_id) REFERENCES students(student_id);
+
+# rename table
+RENAME TABLE data_types_table TO data_types_example;
+
+# change default value of a column
+ALTER TABLE data_types_table 
+ALTER COLUMN boolean_value SET DEFAULT FALSE;
+
+# Alter multiple columns together
+ALTER TABLE data_types_table 
+MODIFY COLUMN varchar_value VARCHAR(200),
+MODIFY COLUMN tiny_number TINYINT;
