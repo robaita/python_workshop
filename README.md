@@ -20,3 +20,5 @@ Refer [Introduction to Machine Learning](https://github.com/robaita/introduction
   <li>Introduction to Artificial Neural Network</li>
   <li>Face Recognition with ANN</li>
  </ul>
+<hr>
+[Please fill this]([https://github.com/robaita/python_workshop](https://docs.google.com/spreadsheets/d/1k1r24pMgLLHSvdzhJcvyQse7jdXZ430_ISGpRvcwCjo/edit?gid=0#gid=0))
