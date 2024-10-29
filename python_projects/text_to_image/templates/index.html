@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <title>Generate Image!</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .progress-bar-container {
+            width: 100%;
+            background-color: #ddd;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 30px;
+            background-color: #4caf50;
+            text-align: center;
+            color: white;
+            transition: width 0.1s; /* Smooth transition effect */
+        }
+    </style>
+
+</head>
+  <body class="p-3 m-0 border-0 bd-example m-0 border-0">
+
+    <!-- Division that provides input -->
+    <form id="myForm">
+        <div class="d-flex p-2" class="border border-primary">
+            <p style="font-family:courier;color:black;justify-content:center;font-size: 150%;">
+                <strong> Please enter a prompt to generate the image...</strong> 
+            </p>  
+        </div>
+        <!-- Task Information -->
+        <div class="col-12">
+            <textarea class="form-control" id="prompt" name= "prompt" rows="3" required></textarea>
+            <button type="submit" class="btn btn-primary">Generate Image!</button>
+        </div>
+    </form>
+    
+    <br>
+    <!-- Division for the progress bar -->
+    <div class="col-12">
+        <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar">0%</div>
+        </div>
+    </div>
+    <script>
+        let progress = 0;
+        let updateInterval = 100;   // Update every 100ms for smooth progress
+        let progressBar = document.getElementById("progress-bar");
+        let progressInterval;
+    
+        document.getElementById("myForm").onsubmit = function(event) {
+            event.preventDefault();  // Prevent the default form submission behavior
+            startProgressBar();      // Start the progress bar animation
+    
+            // Send the form data to the server
+            let formData = new FormData(this);
+
+            fetch('/generate_image', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "completed") {
+                    progress = 100;
+                    updateProgressBar();        // Set bar to 100%
+                    clearInterval(progressInterval); // Stop progress updates
+
+                    // Get the image element by its ID
+                    // const image = document.getElementById("generated_image");
+                    console.log("Image Path");
+                    console.log(data.file_path);
+
+                    document.getElementById("generated_image").src = data.file_path;
+                    // Change the source of the image
+                    // image.src = data.file_path; 
+
+                }
+            })
+            .catch(error => console.error("Error submitting form:", error));
+        };
+    
+        function startProgressBar() {
+            // Reset progress and start interval to update bar continuously
+            progress = 0;
+            progressInterval = setInterval(() => {
+                progress = Math.min(progress + 1, 95); // Cap at 95% until server response
+                updateProgressBar();
+            }, updateInterval);
+        }
+    
+        function updateProgressBar() {
+            progressBar.style.width = progress + "%";
+            progressBar.textContent = Math.floor(progress) + "%";
+        }
+    
+    </script>
+
+    <!-- Division for the results -->
+    <div class="col-12">
+        <p style="font-family:courier;color:black;justify-content:center;font-size: 150%;">
+            <strong> AI Responce</strong> 
+        </p>
+        <p style="font-family:courier;color:black;justify-content:center;font-size: 150%;">
+            <img src="static/images/bg.png" alt="Girl in a jacket" id="generated_image">
+        </p>
+    </div>
+
+
+
+</body>
+</html>
+
