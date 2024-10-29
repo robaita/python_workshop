@@ -222,4 +222,4 @@ def delete_records():
     return render_template('delete_tasks.html', tasks = tasks)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
